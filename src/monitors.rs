@@ -1,3 +1,5 @@
+use std::process::{Command, Output};
+
 #[derive(Debug)]
 pub enum MonitorName {
     All,
@@ -91,7 +93,111 @@ impl Monitor {
 
 #[derive(Debug)]
 pub struct Profile {
-    name: String,
+    pub name: String,
     monitors: Vec<Monitor>,
-    default_monitor: Monitor,
+}
+
+impl Profile {
+    pub fn new_profile1() -> Profile {
+	Profile {
+	    name: String::from("undocked"),
+	    monitors: vec![
+		Monitor {
+		    name: MonitorName::Name("eDP-1".to_owned()),
+		    resolution: MontiorResolution::Resolution {
+			width: 2256,
+			height: 1504,
+			refresh_rate: 60,
+		    },
+		    position: MonitorPosition::Position {
+			x: 0,
+			y: 0,
+		    },
+		    scale: MonitorScale::Scale(2),
+		    enabled: true,
+		},
+		Monitor {
+		    name: MonitorName::Name(String::from("DP-2")),
+		    resolution: MontiorResolution::Resolution {
+			width: 1920,
+			height: 1080,
+			refresh_rate: 60,
+		    },
+		    position: MonitorPosition::Position {
+			x: 0,
+			y: 0,
+		    },
+		    scale: MonitorScale::Scale(1),
+		    enabled: true,
+		},
+		Monitor {
+		    name: MonitorName::All,
+		    resolution: MontiorResolution::Prefered,
+		    position: MonitorPosition::Auto,
+		    scale: MonitorScale::Auto,
+		    enabled: true,
+		},
+	    ],
+	}
+    }
+
+    pub fn new_profile2() -> Profile {
+	Profile {
+	    name: String::from("docked"),
+	    monitors: vec![
+		Monitor {
+		    name: MonitorName::Name("eDP-1".to_owned()),
+		    resolution: MontiorResolution::Resolution {
+			width: 2256,
+			height: 1504,
+			refresh_rate: 60,
+		    },
+		    position: MonitorPosition::Position {
+			x: 0,
+			y: 0,
+		    },
+		    scale: MonitorScale::Scale(2),
+		    enabled: false,
+		},
+		Monitor {
+		    name: MonitorName::Name(String::from("DP-2")),
+		    resolution: MontiorResolution::Resolution {
+			width: 1920,
+			height: 1080,
+			refresh_rate: 60,
+		    },
+		    position: MonitorPosition::Position {
+			x: 0,
+			y: 0,
+		    },
+		    scale: MonitorScale::Scale(1),
+		    enabled: true,
+		},
+		Monitor {
+		    name: MonitorName::All,
+		    resolution: MontiorResolution::Prefered,
+		    position: MonitorPosition::Auto,
+		    scale: MonitorScale::Auto,
+		    enabled: true,
+		},
+	    ],
+	}
+    }
+
+    pub fn hyprland_strings(&self) -> Vec<String> {
+        self.monitors.iter().map(|x| x.hyprland_string()).collect()
+    }
+
+    pub fn configure_monitors(&self) -> Vec<Output> {
+	let mon_iter: Vec<String> = self.hyprland_strings();
+	mon_iter
+	    .iter()
+	    .map(|ref x|
+		 Command::new("hyprctl")
+		 .args(["keyword", "monitor"])
+		 .arg(x)
+		 .output()
+		 .expect(format!("failed to execute command 'hyprctl keyword monitor {x}").as_str()))
+	    .collect()
+    }
 }
