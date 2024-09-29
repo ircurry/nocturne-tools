@@ -113,15 +113,15 @@ impl Profile {
         let mon_iter: Vec<String> = self.hyprland_strings();
         mon_iter
             .iter()
-            .map(|ref x| {
-                Command::new("hyprctl")
-                    .args(["keyword", "monitor"])
-                    .arg(x)
-                    .output()
-                    .expect(
-                        format!("failed to execute command 'hyprctl keyword monitor {x}").as_str(),
-                    )
-            })
+            .map(|ref x|
+                 Command::new("hyprctl")
+                 .args(["keyword", "monitor"])
+                 .arg(x)
+                 .output()
+                 .expect(
+                     format!("failed to execute command 'hyprctl keyword monitor {x}").as_str(),
+                 )
+            )
             .collect()
     }
 }
