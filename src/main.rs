@@ -1,3 +1,4 @@
+use colored::Colorize;
 use home::home_dir;
 use monitors::Profile;
 use std::env;
@@ -46,7 +47,10 @@ fn main() {
 
     for profile in profiles {
         if profile.name == target_profile {
-            println!("configuring monitors according to profile {}", profile.name);
+            println!("Configuring Monitors According to Profile {}.", profile.name.bold().green());
+	    for hypr_strings in profile.hyprland_strings() {
+		println!("Monitor {}", hypr_strings.bold().blue())
+	    }
             profile.configure_monitors();
             return;
         } else {
