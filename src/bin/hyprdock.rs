@@ -1,12 +1,10 @@
 use colored::Colorize;
 use home::home_dir;
-use monitors::Profile;
+use nocturne_tools::monitors::Profile;
 use std::env;
 use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
-
-mod monitors;
 
 fn main() {
     let target_profile: String = {
