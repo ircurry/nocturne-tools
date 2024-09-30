@@ -35,6 +35,11 @@
             languages.nix.enable = true;
             languages.rust.enable = true;
           };
+
+          packages = rec {
+            hyprdock = pkgs.callPackage ./nix/packages/hyprdock.nix { };
+            default = hyprdock;
+          };
         };
     };
 }
