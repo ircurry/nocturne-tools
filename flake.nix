@@ -1,5 +1,5 @@
 {
-  description = "Minimal flake for C development";
+  description = "Tools to help me manage my Hyprland desktop";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
