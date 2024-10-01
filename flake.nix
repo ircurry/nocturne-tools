@@ -37,8 +37,13 @@
           };
 
           packages = rec {
-            hyprdock = pkgs.callPackage ./nix/packages/hyprdock.nix { };
-            default = hyprdock;
+            default = pkgs.callPackage ./nix/packages/package.nix { };
+            hyprdock = default.overrideAttrs {
+              cargoBuildFlags = [
+                "--bin"
+                "hyprdock"
+              ];
+            };
           };
         };
     };
