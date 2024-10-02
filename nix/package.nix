@@ -8,9 +8,9 @@
   version = "0.1.0";
   env.NIX_RELEASE_VERSION = version;
 
-  src = ../../.;
+  src = ../.;
 
-  cargoLock.lockFile = ../../Cargo.lock;
+  cargoLock.lockFile = ../Cargo.lock;
 
   nativeBuildInputs = [
     makeWrapper
