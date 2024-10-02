@@ -1,0 +1,5 @@
+#+title: Tools for helping with my desktop
+
+This is mostly just a Rust rewrite of [[https://github.com/ircurry/dfh][dfh]]. I did this because I wanted to learn Rust. While in all likely hood using it should be no issue, I make no guarantees that this will work on anyone else's computer other than my own.
+
+Right now it consist only of hyprdock, a tool that reads a JSON description of how monitors should be set up according to "profiles". The idea is more or less [[https://wayland.emersion.fr/kanshi/][kanshi]] for [[https://hyprland.org/][Hyprland]] (since kanshi does not play well with kanshi).
