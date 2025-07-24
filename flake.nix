@@ -7,17 +7,12 @@
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
     };
-
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
     inputs@{ flake-parts, nixpkgs, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.devenv.flakeModule ];
+      imports = [ ];
       systems = nixpkgs.lib.systems.flakeExposed;
 
       perSystem =
@@ -30,18 +25,13 @@
           ...
         }:
         {
-          devenv.shells.default = {
-            # packages = with pkgs; [ ];
-            languages.nix.enable = true;
-            languages.rust.enable = true;
-          };
-
+          devShells.default = import ./nix/shell.nix { inherit pkgs; };
           packages = rec {
             default = pkgs.callPackage ./nix/package.nix { };
             hyprdock = default.overrideAttrs {
               cargoBuildFlags = [
                 "--bin"
-                "hyprdock"
+                "noct"
               ];
             };
           };

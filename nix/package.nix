@@ -3,8 +3,13 @@
   rustPlatform,
   makeWrapper,
   hyprland,
-}: rustPlatform.buildRustPackage rec {
-  pname = "hyprdock";
+  compositor ? "hyprland"
+}:
+assert lib.assertOneOf "compositor" compositor [
+  "hyprland"
+];
+rustPlatform.buildRustPackage rec {
+  pname = "noct";
   version = "0.1.0";
   env.NIX_RELEASE_VERSION = version;
 
@@ -16,11 +21,15 @@
     makeWrapper
   ];
 
-  postFixup = ''
-    wrapProgram $out/bin/hyprdock --prefix PATH : ${lib.makeBinPath [hyprland]}
-  '';
+  postFixup =
+    let
+      packages = [] ++ lib.optionals (compositor == "hyprland") [hyprland];
+    in
+    ''
+      wrapProgram $out/bin/noct --prefix PATH : ${lib.makeBinPath packages}
+    '';
 
   meta = {
-    description = "hyprdock sets hyprland monitor configuration according to a profile";
+    description = "manage my nocture nixos configurations";
   };
 }
